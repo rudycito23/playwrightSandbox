@@ -2,14 +2,24 @@ import { BrowserContext, Locator, Page, expect } from '@playwright/test';
 import { BasePage } from './basePage';
 
 export class AngularPage extends BasePage {
+  // buttons
   readonly exploreDocsLink: Locator;
+  readonly loginButton: Locator;
+  readonly signInButton: Locator;
+
   readonly context: BrowserContext;
 
   constructor(page: Page, context: BrowserContext) {
     super(page);
-    this.exploreDocsLink = this.page.getByRole('link', {
+    // buttons
+    this.exploreDocsLink = page.getByRole('link', {
       name: 'Explore the Docs',
     });
+    this.loginButton = page.getByRole('button', { name: 'Login' });
+    this.signInButton = page.getByRole('button', {
+      name: 'Sign in',
+    });
+
     this.context = context;
   }
 
@@ -32,5 +42,19 @@ export class AngularPage extends BasePage {
   async validateDisplayExploreDocsLink() {
     await expect(this.exploreDocsLink).toBeVisible({ timeout: 10000 });
     await expect(this.exploreDocsLink).toContainText('Explore the Docs');
+  }
+
+  async validateLoginButton() {
+    await expect(this.loginButton).toBeVisible({ timeout: 10000 });
+    await expect(this.loginButton).toContainText('Login');
+    await this.loginButton.click();    
+  }
+
+  async validateOktaLogin() {
+    // Wait for the new page to load after clicking the Login button
+    // const newPage = await this.context.waitForEvent('page');
+  
+    // Ensure the "Go to Homepage" button is visible on the new page
+    await expect(this.signInButton).toBeVisible({ timeout: 10000 });
   }
 }
