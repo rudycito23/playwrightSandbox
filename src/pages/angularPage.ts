@@ -51,10 +51,6 @@ export class AngularPage extends BasePage {
   }
 
   async validateOktaLogin() {
-    // Wait for the new page to load after clicking the Login button
-    // const newPage = await this.context.waitForEvent('page');
-  
-    // Ensure the "Go to Homepage" button is visible on the new page
     await expect(this.signInButton).toBeVisible({ timeout: 10000 });
   }
 }
