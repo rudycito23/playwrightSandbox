@@ -15,7 +15,7 @@ export class AngularPage extends BasePage {
     this.exploreDocsLink = page.getByRole('link', {
       name: 'Explore the Docs',
     });
-    this.loginButton = page.getByRole('button', { name: 'Login' });
+    this.loginButton = page.getByTestId('login-button');
     this.signInButton = page.getByRole('button', {
       name: 'Sign in',
     });
@@ -45,10 +45,25 @@ export class AngularPage extends BasePage {
   }
 
   async validateLoginButton() {
-    await expect(this.loginButton).toBeVisible({ timeout: 10000 });
+    // Ensure the login button is visible
+    await expect(this.loginButton).toBeVisible();
+    await expect(this.loginButton).toContainText('Loading...');
+
+    // Wait for the button to become enabled
+    await expect(this.loginButton).toBeEnabled({ timeout: 10000 });
+
+    // Ensure the login button contains the text "Login"
     await expect(this.loginButton).toContainText('Login');
-    await this.loginButton.click();    
-  }
+
+    // Confirm the button's background color is .bg-green-500
+    const backgroundColor = await this.loginButton.evaluate((button) =>
+        window.getComputedStyle(button).backgroundColor
+    );
+    expect(backgroundColor).toBe('rgb(34, 197, 94)');
+
+    // Click the login button
+    await this.loginButton.click();
+}
 
   async validateOktaLogin() {
     await expect(this.signInButton).toBeVisible({ timeout: 10000 });

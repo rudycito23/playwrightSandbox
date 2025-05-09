@@ -1,1 +1,15 @@
-<button (click)="login()" id="login-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Login</button>
+<button
+  (click)="login()"
+  id="login-button"
+  [ngClass]="{
+    'bg-green-500 hover:bg-green-700': isFeatureEnabled && isButtonGreen,
+    'bg-blue-500 hover:bg-blue-700': !isButtonGreen,
+    'opacity-50 cursor-not-allowed': isLoading
+  }"
+  [disabled]="isLoading"
+  class="text-white font-bold py-2 px-4 rounded transition-all duration-300"
+  data-testid="login-button"
+>
+  <span *ngIf="!isLoading">{{ buttonText }}</span>
+  <span *ngIf="isLoading">Loading...</span>
+</button>

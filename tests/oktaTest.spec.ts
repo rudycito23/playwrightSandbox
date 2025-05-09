@@ -11,7 +11,7 @@ test.describe('Angular test', () => {
       await basePage.navigateToPage();
     });
 
-    await test.step('Validate Login button contains Login text & is visible', async () => {
+    await test.step('Validate Login button, its color, state & is visible', async () => {
       await angularPage.validateLoginButton();
       await angularPage.validateOktaLogin();
     });
